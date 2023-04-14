@@ -16,19 +16,24 @@ namespace Dynamite {
             case THRESHOLD:
                 threshold = (const float *)data;
                 break;
+            case GAIN:
+                gain = (const float *)data;
         }
     }
 
     void Drive::run(uint32_t n_samples) {
         const float coeff = dbCo(*drive);
+        const float threshCoeff = dbCo(*threshold);
+        const float gainCoeff = dbCo(*gain);
 
         for(uint32_t pos = 0; pos < n_samples; pos++) {
             output[pos] = input[pos] * coeff;
-            if(output[pos] > *threshold) {
-                output[pos] = *threshold;
-            } else if (output[pos] < -*threshold) {
-                output[pos] = -*threshold;
+            if(output[pos] > threshCoeff) {
+                output[pos] = threshCoeff;
+            } else if (output[pos] < -threshCoeff) {
+                output[pos] = -threshCoeff;
             }
+            output[pos] = output[pos] * gainCoeff;
         }
     }
 }
