@@ -6,13 +6,14 @@ using namespace LV2;
 
 namespace Dynamite {
     enum PluginPort {
-        IN, OUT, DRIVE, THRESHOLD, GAIN
+        IN, OUT, DRIVE, THRESHOLD, GAIN, MIX
     };
 
     class Drive : public Plugin<Drive> {
         const float *drive;
         const float *threshold;
         const float *gain;
+        const float *mix;
         const float *input;
         float *output;
     public:

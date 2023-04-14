@@ -18,6 +18,8 @@ namespace Dynamite {
                 break;
             case GAIN:
                 gain = (const float *)data;
+            case MIX:
+                mix = (const float *)data;
         }
     }
 
@@ -27,13 +29,17 @@ namespace Dynamite {
         const float gainCoeff = dbCo(*gain);
 
         for(uint32_t pos = 0; pos < n_samples; pos++) {
-            output[pos] = input[pos] * coeff;
-            if(output[pos] > threshCoeff) {
-                output[pos] = threshCoeff;
-            } else if (output[pos] < -threshCoeff) {
-                output[pos] = -threshCoeff;
+            float dist = input[pos] * coeff;
+
+            if(dist > threshCoeff) {
+                dist = threshCoeff;
+            } else if (dist < -threshCoeff) {
+                dist = -threshCoeff;
             }
-            output[pos] = output[pos] * gainCoeff;
+
+            dist = dist * gainCoeff;
+
+            output[pos] = (*mix * dist) + ((1.0 - *mix) * input[pos]);
         }
     }
 }
