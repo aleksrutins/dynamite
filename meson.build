@@ -28,6 +28,7 @@ shlib = shared_library('dynamite', srcs,
   name_prefix : '',
   dependencies : [
     dependency('lv2'),
+    dependency('lv2-plugin'),
     cc.find_library('m'),
     dependency('threads')
   ]
