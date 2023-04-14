@@ -13,6 +13,9 @@ namespace Dynamite {
             case DRIVE:
                 drive = (const float *)data;
                 break;
+            case THRESHOLD:
+                threshold = (const float *)data;
+                break;
         }
     }
 
@@ -21,6 +24,11 @@ namespace Dynamite {
 
         for(uint32_t pos = 0; pos < n_samples; pos++) {
             output[pos] = input[pos] * coeff;
+            if(output[pos] > *threshold) {
+                output[pos] = *threshold;
+            } else if (output[pos] < -*threshold) {
+                output[pos] = -*threshold;
+            }
         }
     }
 }

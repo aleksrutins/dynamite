@@ -11,6 +11,7 @@ namespace Dynamite {
 
     class Drive : public Plugin<Drive> {
         const float *drive;
+        const float *threshold;
         const float *input;
         float *output;
     public:
