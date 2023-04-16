@@ -22,7 +22,7 @@ namespace Dynamite {
 
             dist = dist * gainCoeff;
 
-            output[pos] = (mix * dist) + ((1.0 - mix) * input[pos]);
+            output[pos] = (mix * dist) + ((1.0 - mix) * input[pos] * gainCoeff);
         }
     }
 }
