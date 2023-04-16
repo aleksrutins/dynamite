@@ -34,7 +34,7 @@ namespace Dynamite {
 
             if(abs(input[pos]) < transmogrifyThreshold) transmogrified = 0;
 
-            output[pos] = (mix * ((algoMix * transmogrified) + ((1.0 - algoMix) * dist))) + ((1.0 - mix) * input[pos] * gainCoeff);
+            output[pos] = (mix * ((algoMix * transmogrified) + ((1.0 - algoMix) * dist))) + ((1.0 - mix) * input[pos] * coeff * threshCoeff * gainCoeff);
         }
     }
 }
