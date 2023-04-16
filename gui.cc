@@ -81,11 +81,14 @@ namespace Dynamite {
                     threshold_scale->set_value(value); break;
                 case p_gain:
                     gain_scale->set_value(value); break;
+                case p_transmogrify_gain:
+                    t_gain_scale->set_value(value); break;
+                case p_transmogrify_threshold:
+                    t_threshold_scale->set_value(value); break;
                 case p_algorithm_mix:
                     transmogrify_scale->set_value(value); break;
                 case p_mix:
                     mix_scale->set_value(value); break;
-
             }
         }
     };
