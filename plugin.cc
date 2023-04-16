@@ -2,31 +2,14 @@
 #include "util.hh"
 
 namespace Dynamite {
-    void Drive::connect_port(uint32_t port, void* data) {
-        switch((PluginPort)port) {
-            case IN:
-                input = (const float *)data;
-                break;
-            case OUT:
-                output = (float *)data;
-                break;
-            case DRIVE:
-                drive = (const float *)data;
-                break;
-            case THRESHOLD:
-                threshold = (const float *)data;
-                break;
-            case GAIN:
-                gain = (const float *)data;
-            case MIX:
-                mix = (const float *)data;
-        }
-    }
-
     void Drive::run(uint32_t n_samples) {
-        const float coeff = dbCo(*drive);
-        const float threshCoeff = dbCo(*threshold);
-        const float gainCoeff = dbCo(*gain);
+        const float coeff = dbCo(*p(p_drive));
+        const float threshCoeff = dbCo(*p(p_threshold));
+        const float gainCoeff = dbCo(*p(p_gain));
+        const float mix = *p(p_mix);
+
+        const float *input = p(p_audio_in);
+        float *output = p(p_audio_out);
 
         for(uint32_t pos = 0; pos < n_samples; pos++) {
             float dist = input[pos] * coeff;
@@ -39,7 +22,7 @@ namespace Dynamite {
 
             dist = dist * gainCoeff;
 
-            output[pos] = (*mix * dist) + ((1.0 - *mix) * input[pos]);
+            output[pos] = (mix * dist) + ((1.0 - mix) * input[pos]);
         }
     }
 }
