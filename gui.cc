@@ -65,7 +65,7 @@ namespace Dynamite {
             mix_scale = create_scale(p_mix, ORIENTATION_HORIZONTAL);
             vbox->add(*manage(new LabeledWidget("Mix", *mix_scale)));
 
-            add(*vbox);
+            pack_start(*vbox, true, true, 10);
         }
 
         static void write_control_ptr(DriveGUI *self, uint32_t port, Scale *ctrl) {
