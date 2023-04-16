@@ -7,6 +7,7 @@ namespace Dynamite {
         const float threshCoeff = dbCo(*p(p_threshold));
         const float gainCoeff = dbCo(*p(p_gain));
         const float mix = *p(p_mix);
+        const float algoMix = *p(p_algorithm_mix);
 
         const float *input = p(p_audio_in);
         float *output = p(p_audio_out);
@@ -22,7 +23,10 @@ namespace Dynamite {
 
             dist = dist * gainCoeff;
 
-            output[pos] = (mix * dist) + ((1.0 - mix) * input[pos] * gainCoeff);
+            float transmogrifier = threshCoeff * gainCoeff;
+            float transmogrified = (input[pos] < 0 ? -transmogrifier : transmogrifier);
+
+            output[pos] = (mix * ((algoMix * transmogrified) + ((1.0 - algoMix) * dist))) + ((1.0 - mix) * input[pos] * gainCoeff);
         }
     }
 }
