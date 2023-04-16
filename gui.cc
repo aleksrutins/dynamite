@@ -24,6 +24,8 @@ namespace Dynamite {
         Scale *threshold_scale;
         Scale *gain_scale;
         Scale *mix_scale;
+        Scale *t_gain_scale;
+        Scale *t_threshold_scale;
         Scale *transmogrify_scale;
         Scale *create_scale(p_port_enum nport, Orientation orient = ORIENTATION_VERTICAL) {
             auto port = p_ports[nport];
@@ -35,18 +37,28 @@ namespace Dynamite {
     public:
         DriveGUI(const std::string &url) {
             auto vbox = manage(new VBox(false, 6));
-            auto hbox = manage(new HBox(false, 6));
+            auto notebook = manage(new Notebook);
 
             vbox->add(*manage(new Label("Dynamite")));
 
+            auto clip_hbox = manage(new HBox(false, 6));
             drive_scale = create_scale(p_drive);
-            hbox->add(*manage(new LabeledWidget("Drive", *drive_scale)));
+            clip_hbox->add(*manage(new LabeledWidget("Drive", *drive_scale)));
             threshold_scale = create_scale(p_threshold);
-            hbox->add(*manage(new LabeledWidget("Threshold", *threshold_scale)));
+            clip_hbox->add(*manage(new LabeledWidget("Threshold", *threshold_scale)));
             gain_scale = create_scale(p_gain);
-            hbox->add(*manage(new LabeledWidget("Gain", *gain_scale)));
+            clip_hbox->add(*manage(new LabeledWidget("Gain", *gain_scale)));
+            notebook->append_page(*clip_hbox, "Clipping");
             
-            vbox->add(*hbox);
+            auto transmogrify_hbox = manage(new HBox(false, 6));
+            t_gain_scale = create_scale(p_transmogrify_gain);
+            transmogrify_hbox->add(*manage(new LabeledWidget("Gain", *t_gain_scale)));
+            t_threshold_scale = create_scale(p_transmogrify_threshold);
+            transmogrify_hbox->add(*manage(new LabeledWidget("Noise Threshold", *t_threshold_scale)));
+            notebook->append_page(*transmogrify_hbox, "Transmogrifier");
+
+            vbox->add(*notebook);
+
 
             transmogrify_scale = create_scale(p_algorithm_mix, ORIENTATION_HORIZONTAL);
             vbox->add(*manage(new LabeledWidget("Transmogrify", *transmogrify_scale)));
